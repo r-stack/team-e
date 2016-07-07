@@ -1,0 +1,47 @@
+{% load i18n %}
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>voteme - energize people to vote</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container" style="margin-top:20%;margin-bottom:30px;">
+    <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <h2 class="center-text">Please log in as Twitter account!</h2>
+    </div>
+   </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <ul>
+        <li><a href="{% url socialauth_begin 'twitter' %}">Enter using Twitter</a></li>
+      </ul>
+
+<!--
+          <form mothod="post" action="{% url 'login' %}" class="">
+          {% csrf_token %}
+          <table>
+            <tr>
+              <td>{{ form.username.label_tag }}</td>
+              <td>{{ form.username }}</td>
+            </tr>
+            <tr>
+              <td>{{ form.password.label_tag }}</td>
+              <td>{{ form.password }}</td>
+            </tr>
+          </table>
+
+          <input type="submit" value="login" />
+          <input type="hidden" name="next" value="{{ next }}" />
+          </form>
+-->
+      </div><!--col-->
+    </div><!--row-->
+  </div><!--container-->
+
+
+  </body>
