@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-docomoの言語解析API(固有表現抽出)を叩くサンプルコード
+docomoの言語解析API(カテゴリ分析)を叩くコード
 """
+
+import sys
 import requests
 import json
 import urllib
+import time
+
+from getUserTimeline import getUserTimeline
 
 BASEURL = "https://api.apigw.smt.docomo.ne.jp/truetext/v1/clusteranalytics?APIKEY="
 APIKEY = "444552716859306e54463832347732396661536342585358677146544852764378504a4f706c6b69715a36" #ここにAPIKEYを入力
@@ -23,10 +28,13 @@ class Docomo(object):
         r = requests.post(self.uri, data=self.payload, headers=self.headers)
         return json.loads(r.text)
 
+
 #################### ext1StRankCategory ####################
-def ext1StRankCategory(str):
+def ext1stRankCategory(text):
     agent = Docomo()
-    resp  = agent.parse(str)
+
+    print type(text)
+    resp = agent.parse(text)
 
     status  = resp["status"]
     count   = resp["count"]
@@ -35,21 +43,41 @@ def ext1StRankCategory(str):
 # print response for debug
     print "Status: {}\t Count: {}\t".format(status, count)
 
-    clusters = resp["clusters"]
-    
+# Ignore a too short tweet
+    if(count == 0):
+        return None
+
 # Get the cluster of 1st rank
+    clusters = resp["clusters"]
     for cluster in clusters:
-        name = cluster["cluster_name"]
-        rate = cluster["cluster_rate"]
-        rank = cluster["cluster_rank"]
-        
-        if rank == 1:
+        if cluster["cluster_rank"] == 1:
+            name = cluster["cluster_name"]
             break
 
-    print name
-    print rate
-    print rank
+    return name
+
+
+#################### getCategoryList ####################
+def getCategoryList(account, getTweetNum):
+ categoryList = []
+ user, state = getUserTimeline(account, getTweetNum)
+
+ for s in state :
+     text = s.text
+# To avoid throughput overrun
+     time.sleep(0.2)
+     category = ext1stRankCategory(text)
+
+     if(category != None):
+         categoryList.append(category)
+
+ return categoryList
+
 
 if __name__ == "__main__":
-    str = u'昨日は隅田川に花火を見に行きました。地下鉄の浅草駅で降りた瞬間から、大混雑していました。地上に出てみると人混みと交通規制の多さで大苦戦しましたが、何とか良い場所で花火を見るこが出来ました。夏の風物詩、花火をどうぞお楽しみください'
-    ext1StRankCategory(str)
+    argv = sys.argv
+    categoryList = getCategoryList(argv[1], argv[2])
+
+# For debug
+    for category in categoryList:
+        print category.encode(sys.getfilesystemencoding())
