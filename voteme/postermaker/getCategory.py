@@ -42,7 +42,7 @@ class categoryGetter():
         rawdata = resp["rawdata"]
         
 # print response for debug
-        print "Status: {}\t Count: {}\t".format(status, count)
+#        print "Status: {}\t Count: {}\t".format(status, count)
 
 # Ignore a too short tweet
         if(count == 0):
