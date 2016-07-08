@@ -14,7 +14,7 @@ class Matching():
 
         getter = categoryGetter()
         
-        categoryList = getter.getCategoryList(account, 10)
+        categoryList = getter.getCategoryList(account, 20)
      
         Match_A = []
         Match_B = []
