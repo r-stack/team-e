@@ -30,53 +30,54 @@ class Docomo(object):
 
 
 #################### ext1StRankCategory ####################
-def ext1stRankCategory(text):
-    agent = Docomo()
+class categoryGetter():
+    def ext1stRankCategory(self, text):
+        agent = Docomo()
 
-    print type(text)
-    resp = agent.parse(text)
+#        print type(text)
+        resp = agent.parse(text)
 
-    status  = resp["status"]
-    count   = resp["count"]
-    rawdata = resp["rawdata"]
-    
+        status  = resp["status"]
+        count   = resp["count"]
+        rawdata = resp["rawdata"]
+        
 # print response for debug
-    print "Status: {}\t Count: {}\t".format(status, count)
+        print "Status: {}\t Count: {}\t".format(status, count)
 
 # Ignore a too short tweet
-    if(count == 0):
-        return None
+        if(count == 0):
+            return None
 
 # Get the cluster of 1st rank
-    clusters = resp["clusters"]
-    for cluster in clusters:
-        if cluster["cluster_rank"] == 1:
-            name = cluster["cluster_name"]
-            break
+        clusters = resp["clusters"]
+        for cluster in clusters:
+            if cluster["cluster_rank"] == 1:
+                name = cluster["cluster_name"]
+                break
 
-    return name
-
+        return name
+                
 
 #################### getCategoryList ####################
-def getCategoryList(account, getTweetNum):
- categoryList = []
- user, state = getUserTimeline(account, getTweetNum)
+    def getCategoryList(self, account, getTweetNum):
+        categoryList = []
+        user, state = getUserTimeline(account, getTweetNum)
 
- for s in state :
-     text = s.text
+        for s in state :
+            text = s.text
 # To avoid throughput overrun
-     time.sleep(0.3)
-     category = ext1stRankCategory(text)
+            time.sleep(0.3)
+            category = self.ext1stRankCategory(text)
+            if(category != None):
+                categoryList.append(category)
 
-     if(category != None):
-         categoryList.append(category)
-
- return categoryList
+        return categoryList
 
 
 if __name__ == "__main__":
+    getter = categoryGetter()
     argv = sys.argv
-    categoryList = getCategoryList(argv[1], argv[2])
+    categoryList = getter.getCategoryList(argv[1], argv[2])
 
 # For debug
     for category in categoryList:
