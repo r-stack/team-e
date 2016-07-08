@@ -65,7 +65,7 @@ def getCategoryList(account, getTweetNum):
  for s in state :
      text = s.text
 # To avoid throughput overrun
-     time.sleep(0.2)
+     time.sleep(0.3)
      category = ext1stRankCategory(text)
 
      if(category != None):
