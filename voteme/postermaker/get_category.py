@@ -3,23 +3,22 @@
 docomoの言語解析API(カテゴリ分析)を叩くコード
 """
 
-import sys
-import requests
 import json
-import urllib
+import requests
+import sys
 import time
 
-from getUserTimeline import getUserTimeline
+from django import settings
+from get_user_timeline import TwitterTimeLine
 
-BASEURL = "https://api.apigw.smt.docomo.ne.jp/truetext/v1/clusteranalytics?APIKEY="
-APIKEY = "444552716859306e54463832347732396661536342585358677146544852764378504a4f706c6b69715a36" #ここにAPIKEYを入力
 
 class Docomo(object):
-    def __init__(self, APIKEY=APIKEY):
-        self.uri = "{}{}".format(BASEURL, APIKEY)
+
+    def __init__(self, APIKEY=settings.DOCOMO_API_KEY):
+        self.uri = "{}{}".format(settings.DOCOMO_API_BASE_URL, APIKEY)
         self.payload = {
                 "text": None,
-#                "extflg": "0" #一般ワード除外フラグ
+                "extflg": "0",
                 }
         self.headers = {'Content-Type': 'application/x-www-form-urlencoded'}
 
@@ -29,26 +28,20 @@ class Docomo(object):
         return json.loads(r.text)
 
 
-#################### ext1StRankCategory ####################
-class categoryGetter():
+class categoryGetter(object):
+
     def ext1stRankCategory(self, text):
         agent = Docomo()
-
-#        print type(text)
         resp = agent.parse(text)
-
-        status  = resp["status"]
-        count   = resp["count"]
+        status = resp["status"]
+        count = resp["count"]
         rawdata = resp["rawdata"]
-        
-# print response for debug
-#        print "Status: {}\t Count: {}\t".format(status, count)
 
-# Ignore a too short tweet
+        # Ignore a too short tweet
         if(count == 0):
             return None
 
-# Get the cluster of 1st rank
+        # Get the cluster of 1st rank
         clusters = resp["clusters"]
         for cluster in clusters:
             if cluster["cluster_rank"] == 1:
@@ -56,19 +49,17 @@ class categoryGetter():
                 break
 
         return name
-                
 
-#################### getCategoryList ####################
     def getCategoryList(self, account, getTweetNum):
         categoryList = []
         user, state = getUserTimeline(account, getTweetNum)
 
-        for s in state :
+        for s in state:
             text = s.text
-# To avoid throughput overrun
+            # To avoid throughput overrun
             time.sleep(0.3)
             category = self.ext1stRankCategory(text)
-            if(category != None):
+            if(category is not None):
                 categoryList.append(category)
 
         return categoryList
@@ -78,7 +69,3 @@ if __name__ == "__main__":
     getter = categoryGetter()
     argv = sys.argv
     categoryList = getter.getCategoryList(argv[1], argv[2])
-
-# For debug
-    for category in categoryList:
-        print category.encode(sys.getfilesystemencoding())
