@@ -5,6 +5,12 @@
 
 {% block content %}
 
-<p>Welcome {{ user.username }}!</p>
+<p>Welcome {{ user.twitter_account }}!</p>
+
+<ul>
+  {% for tweet in tweets %}
+  <li>{{ tweet }}</li>
+  {% endfor %}
+</ul>
 
 {% endblock content %}

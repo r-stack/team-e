@@ -5,17 +5,19 @@ docomoの言語解析API(カテゴリ分析)を叩くコード
 
 import json
 import requests
-import sys
 import time
 
 from django import settings
 from get_user_timeline import TwitterTimeLine
 
+_DOCOMO_API_BASE_URL = settings.DOCOMO_API_BASE_URL
+_DOCOMO_API_KEY = settings.DOCOMO_API_KEY
+
 
 class Docomo(object):
 
-    def __init__(self, APIKEY=settings.DOCOMO_API_KEY):
-        self.uri = "{}{}".format(settings.DOCOMO_API_BASE_URL, APIKEY)
+    def __init__(self, docomo_api_key=_DOCOMO_API_KEY):
+        self.uri = "{}{}".format(_DOCOMO_API_BASE_URL, docomo_api_key)
         self.payload = {
                 "text": None,
                 "extflg": "0",
@@ -63,9 +65,3 @@ class categoryGetter(object):
                 categoryList.append(category)
 
         return categoryList
-
-
-if __name__ == "__main__":
-    getter = categoryGetter()
-    argv = sys.argv
-    categoryList = getter.getCategoryList(argv[1], argv[2])
