@@ -64,5 +64,5 @@ docs/_build/
 target/
 
 # local
-local/local_settings.py
+voteme/local/local_settings.py
 
