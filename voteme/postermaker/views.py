@@ -19,14 +19,11 @@ _CALLBACK_URI = settings.TWITTER_CALLBACK_URI
 
 
 def poster(request):
-    access_token = request.session.get("access_token", None)
+    access_token = request.session.get('access_token', None)
     if not access_token:
         return redirect('postermaker:login')
 
     user = User.objects.get(oauth_token=access_token)
-
-    print("access_token: " + user.oauth_token)
-    print("access_key: " + user.oauth_token_secret)
 
     tw_timeline = TwitterTimeLine(consumer_key=_CONSUMER_KEY,
                                   consumer_secret=_CONSUMER_SECRET,
@@ -34,6 +31,7 @@ def poster(request):
                                   access_token_secret=user.oauth_token_secret)
 
     user.twitter_account = tw_timeline.get_user_twitter_account()
+    user.twitter_id = tw_timeline.get_user_twitter_id()
     user.save()
 
     context = Context()
@@ -50,35 +48,36 @@ def login(request):
     request_token_url = _REQUEST_TOKEN_URL
     response = oauth_client.fetch_request_token(request_token_url)
 
-    redirect_url = _AUTHORIZATION_URL + "?oauth_token=" +\
-        response["oauth_token"]
+    redirect_url = _AUTHORIZATION_URL + '?oauth_token=' +\
+        response['oauth_token']
 
     return redirect(redirect_url)
 
 
 def callback(request):
-    request_token = request.GET["oauth_token"]
-    verifier = request.GET["oauth_verifier"]
+    request_token = request.GET['oauth_token']
+    verifier = request.GET['oauth_verifier']
     oauth_client = OAuth1Session(_CONSUMER_KEY,
                                  client_secret=_CONSUMER_SECRET,
                                  resource_owner_key=request_token,
                                  verifier=verifier)
     access_token_url = _ACCESS_TOKEN_URL
-    response = oauth_client.fetch_request_token(access_token_url)
+    response = oauth_client.fetch_access_token(access_token_url)
 
     try:
-        user = User.objects.get(twitter_id=response["user_id"])
-        if user.oauth_token != response["oauth_token"]:
-            user.oauth_token = response["oauth_token"]
-            user.oauth_token_secret = response["oauth_token_secret"]
-            user.save()
+        user = User.objects.get(twitter_id=response['user_id'])
     except User.DoesNotExist:
         user = User()
-        user.twitter_id = response["user_id"]
-        user.oauth_token = response["oauth_token"]
-        user.access_token_secret = response["oauth_token_secret"]
+        user.twitter_id = response['user_id']
+        user.oauth_token = response['oauth_token']
+        user.oauth_token_secret = response['oauth_token_secret']
         user.save()
 
-    request.session["access_token"] = response["oauth_token"]
+    if user.oauth_token != response['oauth_token']:
+        user.oauth_token = response['oauth_token']
+        user.oauth_token_secret = response['oauth_token_secret']
+        user.save()
+
+    request.session['access_token'] = response['oauth_token']
 
     return redirect('postermaker:poster')
