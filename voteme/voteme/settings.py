@@ -134,8 +134,19 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+# Docomo APIs
+DOCOMO_API_BASE_URL = 'https://api.apigw.smt.docomo.ne.jp/truetext/v1/clusteranalytics?APIKEY='
+DOCOMO_API_KEY = ''
+
+# Twitter APIs
+TWITTER_ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token'
+TWITTER_REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token'
+TWITTER_AUTHORIZATION_URL = 'https://api.twitter.com/oauth/authorize'
 SOCIAL_AUTH_TWITTER_KEY = ''
 SOCIAL_AUTH_TWITTER_SECRET = ''
+TWITTER_ACCESS_TOKEN = ''
+TWITTER_ACCESS_TOKEN_SECRET = ''
+TWITTER_CALLBACK_URI = ''
 
 # Local settings
 try:

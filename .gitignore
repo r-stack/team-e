@@ -55,7 +55,6 @@ coverage.xml
 *.log
 *.sqlite3
 /static/
-/local/local_settings.py
 
 # Sphinx documentation
 docs/_build/

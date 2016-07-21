@@ -1,17 +1,22 @@
-# @Author: kwbt69
-# @Date:   2016-07-07T16:00:42+09:00
-# @Last modified by:   kwbt69
-# @Last modified time: 2016-07-08T10:57:13+09:00
-
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-
 from django.db import models
 
+
 class Politician(models.Model):
-    twitter_account = models.CharField(max_length=30,default="")
-    manifest = models.CharField(max_length=30,null=True,default="")
+    twitter_account = models.CharField(max_length=30, default="")
+    manifest = models.CharField(max_length=30, null=True, default="")
+
 
 class Category(models.Model):
     politician = models.ForeignKey(Politician)
-    keyword = models.CharField(max_length=30,null=True,default="")
+    keyword = models.CharField(max_length=30, null=True, default="")
+
+
+class User(models.Model):
+    twitter_id = models.BigIntegerField(primary_key=True)
+    twitter_account = models.CharField(max_length=30, default="")
+    oauth_token = models.CharField(max_length=255, db_index=True, unique=True)
+    oauth_token_secret = models.CharField(max_length=255, db_index=True,
+                                          unique=True)
