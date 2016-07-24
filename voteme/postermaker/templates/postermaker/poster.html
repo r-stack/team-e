@@ -8,9 +8,10 @@
 <p>Welcome {{ twitter_account }}!</p>
 
 <ul>
-  {% for tweet in tweets %}
-  <li>{{ tweet }}</li>
+  {% for category in categories %}
+  <li>{{ category }}</li>
   {% endfor %}
+
 </ul>
 
 {% endblock content %}
