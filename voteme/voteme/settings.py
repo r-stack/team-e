@@ -135,7 +135,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Docomo APIs
-DOCOMO_API_BASE_URL = 'https://api.apigw.smt.docomo.ne.jp/truetext/v1/clusteranalytics?APIKEY='
+DOCOMO_API_BASE_URL = 'https://api.apigw.smt.docomo.ne.jp/truetext/v1/clusteranalytics'
 DOCOMO_API_KEY = ''
 
 # Twitter APIs

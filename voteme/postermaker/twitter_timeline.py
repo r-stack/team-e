@@ -16,11 +16,15 @@ class TwitterTimeLine(object):
                                access_token_secret=self.access_token_secret)
         self.user = self.api.VerifyCredentials()
 
-    def get_user_timeline(self, max_tweets):
-        timeline = self.api.GetUserTimeline(screen_name=self.user.screen_name,
-                                            count=max_tweets)
+    def get_user_tweets(self, max_tweets):
+        timelines = self.api.GetUserTimeline(screen_name=self.user.screen_name,
+                                             count=max_tweets)
 
-        return timeline
+        tweets = []
+        for timeline in timelines:
+            tweets.append(timeline.text)
+
+        return tweets
 
     def get_user_twitter_account(self):
         return self.user.screen_name

@@ -5,6 +5,8 @@ from django.conf import settings
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import Context
+import json
+from postermaker.get_category import CategoryExtractor
 from postermaker.models import User
 from postermaker.twitter_timeline import TwitterTimeLine
 from requests_oauthlib import OAuth1Session
@@ -34,9 +36,26 @@ def poster(request):
     user.twitter_id = tw_timeline.get_user_twitter_id()
     user.save()
 
+    tweets = tw_timeline.get_user_tweets(max_tweets=100)
+    ce = CategoryExtractor()
+
+    """
+    TODOs:
+    try:
+        category_list = ce.get_category_list(tweets)
+    except SomeException:
+        pass
+
+    candidates = Candidates()
+    cf = CandidateFinder()
+    candidates = cf.get_candidates(category_list) # returns Candidates object
+
+    context['candidates'] = candidates # returns as text strings in json format
+    """
+
     context = Context()
     context['twitter_account'] = user.twitter_account
-    context['tweets'] = tw_timeline.get_user_timeline(max_tweets=100)
+    context['categories'] = ce.get_category_list(tweets)
 
     return render_to_response('postermaker/poster.html', context)
 
