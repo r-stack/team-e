@@ -1,11 +1,11 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 
 
 from django.conf import settings
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import Context
-import json
+from postermaker.candidate import CandidateFinder
 from postermaker.get_category import CategoryExtractor
 from postermaker.models import User
 from postermaker.twitter_timeline import TwitterTimeLine
@@ -34,28 +34,22 @@ def poster(request):
 
     user.twitter_account = tw_timeline.get_user_twitter_account()
     user.twitter_id = tw_timeline.get_user_twitter_id()
+    user.twitter_profile_image_url = tw_timeline.get_user_profile_image_url()
     user.save()
 
-    tweets = tw_timeline.get_user_tweets(max_tweets=100)
+    tweets = tw_timeline.get_user_tweets()
+
     ce = CategoryExtractor()
+    category_list = ce.get_category_list(tweets)
 
-    """
-    TODOs:
-    try:
-        category_list = ce.get_category_list(tweets)
-    except SomeException:
-        pass
-
-    candidates = Candidates()
+    # returns a list of Candidate objects
     cf = CandidateFinder()
-    candidates = cf.get_candidates(category_list) # returns Candidates object
-
-    context['candidates'] = candidates # returns as text strings in json format
-    """
+    candidates = cf.get_candidates(category_list)
 
     context = Context()
     context['twitter_account'] = user.twitter_account
     context['categories'] = ce.get_category_list(tweets)
+    context['candidates'] = candidates
 
     return render_to_response('postermaker/poster.html', context)
 
