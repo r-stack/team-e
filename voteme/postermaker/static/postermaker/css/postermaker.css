@@ -1,5 +1,16 @@
 
-body {
-    background-color: #FFF;
-
+html, body {
+    height: 100%;
 }
+
+.logo {
+	font-family : Copperplate, 'Alegreya SC', serif;
+}
+
+
+body#login {
+	background-image: url("../img/login-bg.jpg");
+	ackground-size: cover;
+}
+
+
