@@ -1,0 +1,31 @@
+{% extends "postermaker/base.html" %}
+
+{% block title %}voteme - energize people to vote{% endblock title %}
+{% block body_id %}login{% endblock %}
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+    <h2 class="center-text">Please log in as Twitter account!</h2>
+  </div><!--col-->
+</div><!--row-->
+
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+    <ul>
+      {% if user and not user.is_anonymous %}
+      <li>
+        Welcome {{ user.get_full_name|default:user.username }}!!
+      </li>
+      <li>
+	<a href="{% url 'auth:logout' %}">Logout</a>
+      </li>
+      {% else %}
+      <li>
+        <a href="{% url 'social:begin' 'twitter' %}">Login using Twitter</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div><!--col-->
+</div><!--row-->
+{% endblock content %}

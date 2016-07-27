@@ -2,12 +2,13 @@
 
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import Context
-import json
+
 from postermaker.get_category import CategoryExtractor
-from postermaker.models import User
 from postermaker.twitter_timeline import TwitterTimeLine
 from requests_oauthlib import OAuth1Session
 
@@ -19,22 +20,17 @@ _AUTHORIZATION_URL = settings.TWITTER_AUTHORIZATION_URL
 _ACCESS_TOKEN_URL = settings.TWITTER_ACCESS_TOKEN_URL
 _CALLBACK_URI = settings.TWITTER_CALLBACK_URI
 
-
+@login_required
 def poster(request):
-    access_token = request.session.get('access_token', None)
-    if not access_token:
-        return redirect('postermaker:login')
 
-    user = User.objects.get(oauth_token=access_token)
+    user = request.user
+    twitter_auth = user.social_auth.get(provider='twitter')
+    access_token = twitter_auth.access_token
 
     tw_timeline = TwitterTimeLine(consumer_key=_CONSUMER_KEY,
                                   consumer_secret=_CONSUMER_SECRET,
-                                  access_token_key=user.oauth_token,
-                                  access_token_secret=user.oauth_token_secret)
-
-    user.twitter_account = tw_timeline.get_user_twitter_account()
-    user.twitter_id = tw_timeline.get_user_twitter_id()
-    user.save()
+                                  access_token_key=access_token.get('oauth_token'),
+                                  access_token_secret=access_token.get('oauth_token_secret'))
 
     tweets = tw_timeline.get_user_tweets(max_tweets=100)
     ce = CategoryExtractor()
@@ -54,7 +50,7 @@ def poster(request):
     """
 
     context = Context()
-    context['twitter_account'] = user.twitter_account
+    context['twitter_account'] = user.username
     context['categories'] = ce.get_category_list(tweets)
 
     return render_to_response('postermaker/poster.html', context)

@@ -127,7 +127,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = 'static'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/poster/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'social.backends.twitter.TwitterOAuth',

@@ -8,6 +8,6 @@ from postermaker import views
 
 urlpatterns = [
     url(r'^$', views.poster, name="poster"),
-    url(r'^callback/$', views.callback, name="callback"),
-    url(r'^login/$', views.login, name="login"),
+#    url(r'^callback/$', views.callback, name="callback"),
+#    url(r'^login/$', views.login, name="login"),
 ]
