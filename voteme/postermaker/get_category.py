@@ -42,7 +42,7 @@ class CategoryExtractor(object):
 
     def get_category(self, text):
         resp = self.parse(text)
-        count = resp['count']
+        count = resp.get('count', 0)
 
         # Ignore a too short tweet
         if count == 0:
