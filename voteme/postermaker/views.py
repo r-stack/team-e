@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
-from django.template import Context
+from django.template import RequestContext
 
 from postermaker.get_category import CategoryExtractor
 from postermaker.twitter_timeline import TwitterTimeLine
@@ -49,7 +49,7 @@ def poster(request):
     context['candidates'] = candidates # returns as text strings in json format
     """
 
-    context = Context()
+    context = RequestContext(request)
     context['twitter_account'] = user.username
     context['categories'] = ce.get_category_list(tweets)
 
