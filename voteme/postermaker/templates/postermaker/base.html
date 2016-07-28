@@ -15,9 +15,8 @@
   <link rel="stylesheet" href="{% static "postermaker/css/postermaker.css" %}" >
   {% block extrahead %}{% endblock %}
 </head>
-  <body id="{% block body_id %}{% endblock %}">
-  <div class="background-image"></div>
-  <div class="hand-image"></div>
+<body id="{% block body_id %}{% endblock %}">
+  {% block topbar %}{% endblock %}
   <div class="container">
     {% block content %}
       {{ content }}

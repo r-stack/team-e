@@ -5,8 +5,28 @@
 
 .logo {
 	font-family : Copperplate, 'Alegreya SC', serif;
+  color: #333;
 }
 
+.navbar {
+  border-radius: 0px;
+  border-bottom: 1px solid gray;
+}
+.navbar-header {
+  width:100%;
+}
+.navbar-right {
+    float: right!important;
+    margin-right: -12px;
+}
+.navbar-brand {
+  padding-left: 60px;
+  background: url("../img/vote.png") no-repeat left center;
+  background-size: 40px;
+  background-position: 10px center;
+  height: 50px;
+  width: 250px;
+}
 
 body#login .background-image {
   position: fixed;
