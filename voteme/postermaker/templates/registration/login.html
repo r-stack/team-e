@@ -1,31 +1,38 @@
 {% extends "postermaker/base.html" %}
+{% load staticfiles %}
 
 {% block title %}voteme - energize people to vote{% endblock title %}
 {% block body_id %}login{% endblock %}
+{% block topbar %}
+<div class="background-image"></div>
+<div class="hand-image"></div>
+{% endblock %}
 {% block content %}
 
-<div class="row">
-  <div class="col-sm-6 col-sm-offset-3">
-    <h2 class="center-text">Please log in as Twitter account!</h2>
+<div class="row headline">
+  <div class="col-xs-8 col-xs-offset-2">
+    <div class="logo text-center">
+      <img class="loginlogo" src="{% static "postermaker/img/vote.png" %}">
+      <h1>Vote Me</h1>
+    </div>
   </div><!--col-->
 </div><!--row-->
 
-<div class="row">
-  <div class="col-sm-6 col-sm-offset-3">
-    <ul>
-      {% if user and not user.is_anonymous %}
-      <li>
-        Welcome {{ user.get_full_name|default:user.username }}!!
+<div class="row bottomline">
+  <div class="col-xs-6 col-xs-offset-3">
+    <div class="text-center">
+        <a class="btn btn-lg btn-primary"  href="{% url 'social:begin' 'twitter' %}">Login using <br>Twitter</a>
       </li>
-      <li>
-	<a href="{% url 'auth:logout' %}">Logout</a>
-      </li>
-      {% else %}
-      <li>
-        <a href="{% url 'social:begin' 'twitter' %}">Login using Twitter</a>
-      </li>
-      {% endif %}
-    </ul>
+    </div>
   </div><!--col-->
 </div><!--row-->
 {% endblock content %}
+
+{% block scriptextra %}
+<script>
+$("body").addClass("t" + (Math.floor(Math.random()*2) + 1));
+if(Math.random()>0.7){
+  $("body").addClass("hand");
+}
+</script>
+{% endblock scriptextra %}

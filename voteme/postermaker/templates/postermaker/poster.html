@@ -3,13 +3,11 @@
 
 {% block title %}voteme - energize people to vote{% endblock title %}
 {% block body_id %}poster{% endblock %}
+{% block topbar %}
+ {% include "postermaker/_header.html" %}
+{% endblock %}
 {% block content %}
 
-<p>Welcome {{ twitter_account }}!</p>
-
-<p>
-<a href="{% url 'auth:logout' %}?next={% url 'auth:login' %}">Logout</a>
-</p>
 
 <ul>
   {% for category in categories %}
