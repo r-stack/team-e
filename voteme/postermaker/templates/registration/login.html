@@ -5,23 +5,30 @@
 {% block body_id %}login{% endblock %}
 {% block content %}
 
-<div class="row">
-  <div class="col-sm-6 col-sm-offset-3">
+<div class="row headline">
+  <div class="col-xs-8 col-xs-offset-2">
     <div class="logo text-center">
-      <img src="{% static "postermaker/img/vote.png" }">
+      <img class="loginlogo" src="{% static "postermaker/img/vote.png" %}">
       <h1>Vote Me</h1>
     </div>
   </div><!--col-->
 </div><!--row-->
 
-<div class="row">
-  <div class="col-sm-6 col-sm-offset-3">
-    <ul>
-
-      <li>
-        <a href="{% url 'social:begin' 'twitter' %}">Login using Twitter</a>
+<div class="row bottomline">
+  <div class="col-xs-6 col-xs-offset-3">
+    <div class="text-center">
+        <a class="btn btn-lg btn-primary"  href="{% url 'social:begin' 'twitter' %}">Login using <br>Twitter</a>
       </li>
-    </ul>
+    </div>
   </div><!--col-->
 </div><!--row-->
 {% endblock content %}
+
+{% block scriptextra %}
+<script>
+$("body").addClass("t" + (Math.floor(Math.random()*2) + 1));
+if(Math.random()>0.7){
+  $("body").addClass("hand");
+}
+</script>
+{% endblock scriptextra %}
