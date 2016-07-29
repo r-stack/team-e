@@ -36,10 +36,10 @@ def poster(request):
 
     user.twitter_account = tw_timeline.get_user_twitter_account()
     user.twitter_id = tw_timeline.get_user_twitter_id()
-    user.twitter_profile_image_url = tw_timeline.get_user_profile_image_url()
+    twitter_profile_image_url = tw_timeline.get_user_profile_image_url()
     user.save()
 
-    tweets = tw_timeline.get_user_tweets()
+    tweets = tw_timeline.get_user_tweets(max_tweets=10)
 
     ce = CategoryExtractor()
     category_list = ce.get_category_list(tweets)
@@ -52,6 +52,7 @@ def poster(request):
     context['twitter_account'] = user.username
     context['categories'] = ce.get_category_list(tweets)
     context['candidates'] = candidates
+    context['user_tiwtter_profile_image_url'] = twitter_profile_image_url
 
     return render_to_response('postermaker/poster.html', context)
 

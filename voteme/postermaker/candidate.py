@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from postermaker.modles import Politician
+from postermaker.models import Politician
 
 
 class Candidate(object):
@@ -9,38 +9,30 @@ class Candidate(object):
         self._matched_categories = []
 
     @property
-    def matched_categories():
-        doc = "The matched_categories property."
+    def matched_categories(self):
+        """The matched_categories property."""
+        return self._matched_categories
 
-        def fget(self):
-            return self._matched_categories
+    @matched_categories.setter
+    def matched_categories(self, value):
+        self._matched_categories = value
 
-        def fset(self, value):
-            self._matched_categories = value
-
-        def fdel(self):
-            del self._matched_categories
-
-        return locals()
-
-    matched_categories = property(**matched_categories())
+    @matched_categories.deleter
+    def matched_categories(self):
+        del self._matched_categories
 
     @property
-    def twitter_account():
-        doc = "The twitter_account property."
+    def twitter_account(self):
+        """The twitter_account property."""
+        return self._twitter_account
 
-        def fget(self):
-            return self._twitter_account
+    @twitter_account.setter
+    def twitter_account(self, value):
+        self._twitter_account = value
 
-        def fset(self, value):
-            self._twitter_account = value
-
-        def fdel(self):
-            del self._twitter_account
-
-        return locals()
-
-    twitter_account = property(**twitter_account())
+    @twitter_account.deleter
+    def twitter_account(self):
+        del self._twitter_account
 
 
 class CandidateFinder(object):

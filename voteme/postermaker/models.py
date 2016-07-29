@@ -14,11 +14,11 @@ class Politician(models.Model):
 
     @property
     def category_list(self):
-        return json.loads(self.category_list)
+        return json.loads(self._category_list)
 
     @category_list.setter
     def category_list(self, category_list):
-        self.category_list = json.dumps(category_list)
+        self._category_list = json.dumps(category_list)
 
     @category_list.deleter
     def category_list(self):
