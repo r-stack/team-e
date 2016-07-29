@@ -8,12 +8,20 @@
 {% endblock %}
 {% block content %}
 
+<h1>あなたと似た発言をしている候補者はこの人！</h1>
 
+{% for candidate in candidates %}
 <ul>
-  {% for category in categories %}
-  <li>{{ category }}</li>
+  <li><img src="{{ candidate.politician.twitter_profile_image_url }}"/></li>
+  <li>@{{ candidate.politician.twitter_account }}</li>
+  <li>{{ candidate.politician.manifest }}</li>
+  <li>
+  {% for category in candidate.matched_categories %}
+    {{ category }}
   {% endfor %}
-
+  </li>
+  <li>マッチ度 {{ candidate.score }} 点</li>
 </ul>
+{% endfor %}
 
 {% endblock content %}
