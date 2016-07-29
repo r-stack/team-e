@@ -13,11 +13,6 @@ _ACCESS_TOKEN = settings.TWITTER_ACCESS_TOKEN
 _ACCESS_SECRET = settings.TWITTER_ACCESS_TOKEN_SECRET
 
 _POLITICIAN_TWITTER_ACCOUNTS = [
-    'ecoyuri',
-]
-
-"""
-_POLITICIAN_TWITTER_ACCOUNTS = [
     'Shogo_tkhs',
     'YujiroTaniyama',
     'Doronpa01',
@@ -31,7 +26,6 @@ _POLITICIAN_TWITTER_ACCOUNTS = [
     'Chozo_Nakagawa',
     'miyazaki_tokyo',
 ]
-"""
 
 
 class PoliticianUpdator(object):
@@ -44,7 +38,7 @@ class PoliticianUpdator(object):
 
     def get_politician_category_list(self, twitter_account):
         tweets = self._tw_timeline.get_tweets(twitter_account=twitter_account,
-                                              max_tweets=10)
+                                              max_tweets=100)
         category_list = self._ce.get_category_list(tweets)
 
         return category_list
