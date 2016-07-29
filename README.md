@@ -6,15 +6,19 @@
 
 そして、次のコマンドでDBを初期化してください。
 
+```
 python manage.py shell
 >>> import politician_updater
 >>> politician_updater.main()
+```
 
 ちょっと時間がかかります。
 
 
 ローカルで遊ぶなら
+```
 python manage.py runserver
+```
 
 サーバーにデプロイするならuWSGIで呼んでください。
 
