@@ -7,13 +7,8 @@
 そして、次のコマンドでDBを初期化してください。
 
 ```
-python manage.py shell
->>> import politician_updater
->>> politician_updater.main()
+python manage.py migrate
 ```
-
-ちょっと時間がかかります。
-
 
 ローカルで遊ぶなら
 ```
@@ -22,3 +17,4 @@ python manage.py runserver
 
 サーバーにデプロイするならuWSGIで呼んでください。
 
+Enjoy!
