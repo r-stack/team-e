@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from operator import attrgetter
 from postermaker.candidate import CandidateFinder
 from postermaker.get_category import CategoryExtractor
 from postermaker.twitter_timeline import TwitterTimeLine
@@ -51,7 +52,8 @@ def poster(request):
     context = RequestContext(request)
     context['twitter_account'] = user.username
     context['categories'] = ce.get_category_list(tweets)
-    context['candidates'] = candidates
+    context['candidates'] = sorted(
+        candidates, key=attrgetter('score'), reverse=True)
     context['user_tiwtter_profile_image_url'] = twitter_profile_image_url
 
     return render_to_response('postermaker/poster.html', context)
