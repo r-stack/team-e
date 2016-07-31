@@ -38,7 +38,7 @@ class PoliticianUpdator(object):
 
     def get_politician_category_list(self, twitter_account):
         tweets = self._tw_timeline.get_tweets(twitter_account=twitter_account,
-                                              max_tweets=100)
+                                              max_tweets=50)
         category_list = self._ce.get_category_list(tweets)
 
         return category_list

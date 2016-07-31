@@ -18,7 +18,9 @@ class Politician(models.Model):
 
     @category_list.setter
     def category_list(self, category_list):
-        self._category_list = json.dumps(category_list)
+        category_set = set(category_list)
+        short_list = list(category_set)
+        self._category_list = json.dumps(short_list)
 
     @category_list.deleter
     def category_list(self):

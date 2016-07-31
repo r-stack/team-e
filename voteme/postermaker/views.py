@@ -42,7 +42,7 @@ def poster(request):
     twitter_profile_image_url = tw_timeline.get_user_profile_image_url()
     user.save()
 
-    tweets = tw_timeline.get_user_tweets(max_tweets=20)
+    tweets = tw_timeline.get_user_tweets(max_tweets=30)
     logger.debug("tweets = {}".format(tweets))
 
     ce = CategoryExtractor()
