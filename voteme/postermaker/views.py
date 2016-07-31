@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from logging import getLogger
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -21,10 +22,11 @@ _AUTHORIZATION_URL = settings.TWITTER_AUTHORIZATION_URL
 _ACCESS_TOKEN_URL = settings.TWITTER_ACCESS_TOKEN_URL
 _CALLBACK_URI = settings.TWITTER_CALLBACK_URI
 
+logger = getLogger(__name__)
+
 
 @login_required
 def poster(request):
-
     user = request.user
     twitter_auth = user.social_auth.get(provider='twitter')
     access_token = twitter_auth.access_token
@@ -40,14 +42,17 @@ def poster(request):
     twitter_profile_image_url = tw_timeline.get_user_profile_image_url()
     user.save()
 
-    tweets = tw_timeline.get_user_tweets(max_tweets=30)
+    tweets = tw_timeline.get_user_tweets(max_tweets=20)
+    logger.debug("tweets = {}".format(tweets))
 
     ce = CategoryExtractor()
     category_list = ce.get_category_list(tweets)
+    logger.debug("cat_list = {}".format(category_list))
 
     # returns a list of Candidate objects
     cf = CandidateFinder()
     candidates = cf.get_candidates(category_list)
+    logger.debug("len_candidates = {}".format(len(candidates)))
 
     context = RequestContext(request)
     context['twitter_account'] = user.username

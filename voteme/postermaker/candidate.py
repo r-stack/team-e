@@ -66,8 +66,13 @@ class CandidateFinder(object):
                 matched_categories = user_category_set & p_category_set
                 candidate.matched_categories = list(matched_categories)
 
-                candidate.score = len(candidate.matched_categories) / \
+                candidate.score = 100 * len(candidate.matched_categories) / \
                     len(category_list)
+                print("len_match: {len_match}, len_catlist: {len_catlist}, \
+                    score: {score}".format(
+                        len_match=len(candidate.matched_categories),
+                        len_catlist=len(category_list),
+                        score=candidate.score))
 
                 self._candidates.append(candidate)
 
